@@ -94,7 +94,7 @@ class ChapterController extends BaseController
 
 	/**
 	 * @api {post} /document/chapter/record 文档API-查看
-	 * @apiName detail
+	 * @apiName record
 	 * @apiGroup document.Chapter
 	 *
 	 * @apiParam {Number} chapter_id 章节ID
@@ -112,7 +112,7 @@ class ChapterController extends BaseController
 			'chapter_id.integer' => '章节id非法'
 		]);
 		$result = [
-			'record' => [],
+			'record' => null,
 		];
 		$chapter = ChapterLogic::instance()->getById($params['chapter_id'], $params['document_id']);
 		if ($chapter) {
