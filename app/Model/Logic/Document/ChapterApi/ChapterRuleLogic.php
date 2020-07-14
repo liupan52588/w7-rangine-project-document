@@ -32,18 +32,23 @@ class ChapterRuleLogic extends ChapterCommonLogic
 		} else {
 			$locationList = array_keys($this->requestIds());
 		}
-		$obj = ChapterApiParam::query()->where('chapter_id', $chapterId);
+		$obj = ChapterApiParam::query()
+			->select(['chapter_id', 'reponse_id', 'parent_id', 'location', 'type', 'name', 'enabled', 'default_value', 'rule'])
+			->where('chapter_id', $chapterId);
 		if ($locationType && $reponseId) {
 			$obj->where('reponse_id', $reponseId);
 		}
-		$data= $obj->whereIn('location', $locationList)->get()->toArray();
-		$url=ienv('MOCK_API');
-		$json=$this->send_post($url,json_encode($data));
-		return json_decode($json,true);
+		$data = $obj->whereIn('location', $locationList)->get()->toArray();
+		$url = ienv('MOCK_API');
+		$json = $this->send_post($url, json_encode($data));
+		if ($this->isJson($json)) {
+			return json_decode($json, true);
+		}
+		return $json;
 	}
 
-	public function send_post($url, $json) {
-
+	public function send_post($url, $json)
+	{
 		$postdata = $json;
 		$options = array(
 			'http' => array(
