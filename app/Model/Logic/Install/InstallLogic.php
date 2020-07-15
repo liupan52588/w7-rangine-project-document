@@ -35,9 +35,6 @@ class InstallLogic
 			// 初始化数据库
 			$this->initDatabase($config);
 
-			//执行数据迁移
-			$this->migrate();
-
 			// 生成lock文件
 			file_put_contents($lockFile, 'success');
 
@@ -45,12 +42,6 @@ class InstallLogic
 		} catch (\Exception $e) {
 			throw new ErrorHttpException($e->getMessage());
 		}
-	}
-
-	private function migrate()
-	{
-		$shell = BASE_PATH . '/bin/gerent migrate:migrate';
-		exec($shell, $result, $status);
 	}
 
 	private function initDatabase($config)
